@@ -1,5 +1,10 @@
 __author__ = 'Michyo'
 
+'''
+For this .py to run, you must name one folder as 'data_folder'
+put all .csv related to 'current_product' in a sub-folder in it named as 'current_product'
+'''
+
 import csv
 import os
 
@@ -45,4 +50,4 @@ def process_folder(product_code):
 print("Processing " + current_product) # test print
 # clean_file("processed_data.csv")
 # clean_file("processed_data_" + current_product + ".csv")
-process_folder(current_product)
+# process_folder(current_product)
