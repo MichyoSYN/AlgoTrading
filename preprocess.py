@@ -6,13 +6,12 @@ import os
 # Global parameters.
 separate_symbol = os.sep
 data_folder = "data"
-current_product = "HSIX3"
-uni_count = 1
+current_product = "HSIH4"
 
 # Process for one file in a data sub-folder.
 def process_raw_data(file_name, uni_count, product_code, write_in_file):
     count = 0 # test print
-    with open(write_in_file, "a") as f:
+    with open(write_in_file, "ab+") as f:
         writer = csv.writer(f)
         for line in open(file_name):
             data_line = line.split(",")
