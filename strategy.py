@@ -1,6 +1,11 @@
 __author__ = 'Michyo'
 
+import sys
 import process_data
+
+log_name = "out.log"
+log_file = open(log_name, "a")
+sys.stdout = log_file
 
 file_name = "20131128.csv"
 file_date = process_data.filenameIntoDate(file_name)
