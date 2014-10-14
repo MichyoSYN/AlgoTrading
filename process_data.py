@@ -27,8 +27,8 @@ def getNDaysFromDate(date, n):
     else:
         return date + datetime.timedelta(days = n)
 
-def dateIntoFilename(date):
-    return time.strftime("%Y%m%d", date) + ".csv"
+def timeIntoString(date):
+    return time.strftime("%Y%m%d", date)
 
 def findLastNDaysFilename(date, n):
     # past_date =  getNDaysFromDate(date, n)
@@ -108,7 +108,7 @@ def computeOneBollinger(files, bollinger_band_multiplier):
     # print prices
     middle_bollinger = calcSMA(prices)
     sd = calcSD(middle_bollinger, prices)
-    print "SD = " + str(sd) # test
+    print " - SD = " + str(sd) # test
     upper_bollinger = middle_bollinger + bollinger_band_multiplier * sd
     lower_bollinger = middle_bollinger - bollinger_band_multiplier * sd
     return [middle_bollinger, upper_bollinger, lower_bollinger]
