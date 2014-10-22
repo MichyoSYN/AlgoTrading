@@ -1,58 +1,17 @@
 __author__ = 'Michyo'
 
-import csv
-import process_data
-import os
-import datetime
-
-''' LOG OUTPUT
-log_name = "out.log"
-log_file = open(log_name, "a")
-sys.stdout = log_file
-'''
-
-write_in_file = "RSI_band.csv"
-
-print ""
-print "* --- * --- * --- * --- * --- * --- *"
-print ""
-print "--- NAME: RSI LINES ---"
-print datetime.datetime.now()
-print "--- START ---"
+import algorithm
 
 '''
-for f in os.listdir(process_data.folder):
-    file_name_type_separate = os.path.splitext(f)
-    if file_name_type_separate[1] == ".csv":
-        print "file = " + f
-        print process_data.computeOneBollinger(f, -20, 2)
+algorithm.Bollinger_day_duration_slippage1("avg_prices instead of close_prices", "onestock_bollinger_4.log", 20, 2)
+algorithm.Bollinger_day_duration_slippage1("avg_prices instead of close_prices", "onestock_bollinger_5.log", 20, 1.5)
+algorithm.Bollinger_day_duration_slippage1("avg_prices instead of close_prices", "onestock_bollinger_6.log", 15, 1.5)
+algorithm.Bollinger_day_duration_slippage1("avg_prices instead of close_prices", "onestock_bollinger_7.log", 15, 2)
 
-for f in os.listdir(process_data.folder):
-    file_name_type_separate = os.path.splitext(f)
-    if file_name_type_separate[1] == ".csv":
-        print "file = " + f
-        print "RSI = " + str(process_data.computeOneRSI(f, 14))
-'''
-
-'''
-# Output into .csv
-with open(write_in_file, "ab+") as csv_file:
-    csv_writer = csv.writer(csv_file, dialect='excel')
-    file_id = 0
-    for f in os.listdir(process_data.folder):
-        file_name_type_separate = os.path.splitext(f)
-        if file_name_type_separate[1] == ".csv":
-            print "file = " + f
-            bollinger = process_data.computeOneBollinger(f, -20, 2)
-            print bollinger
-            csv_writer.writerow([str(file_id), f, str(bollinger[0]), str(bollinger[1]), str(bollinger[2]), str(bollinger[3])])
-            RSI = process_data.computeOneRSI(f, 14)
-            print RSI
-            csv_writer.writerow([str(file_id), f, str(RSI)])
-
-        file_id += 1
+algorithm.RSI_day_duration_slippage1("avg_prices instead of close_prices", "onestock_RSI_4.log", 9, 30, 70)
+algorithm.RSI_day_duration_slippage1("avg_prices instead of close_prices", "onestock_RSI_5.log", 14, 30, 70)
+algorithm.RSI_day_duration_slippage1("avg_prices instead of close_prices", "onestock_RSI_6.log", 9, 25, 75)
+algorithm.RSI_day_duration_slippage1("avg_prices instead of close_prices", "onestock_RSI_7.log", 14, 25, 75)
 '''
 
 
-print datetime.datetime.now()
-print "--- END ---"

@@ -35,9 +35,9 @@ def getProductCode(file_name):
     if (date - HSIF4_initial_date).days in range(0, 30):
         return "HSIF4"
     HSIG4_initial_date = filenameIntoDate("20140130.csv")
-    if (date - HSIG4_initial_date).days in range(0, 30):
+    if (date - HSIG4_initial_date).days in range(0, 29):
         return "HSIG4"
-    HSIH4_initial_date = filenameIntoDate("20130228.csv")
+    HSIH4_initial_date = filenameIntoDate("20140228.csv")
     if (date - HSIH4_initial_date).days in range(0, 31):
         return "HSIH4"
 
@@ -75,9 +75,9 @@ def getOneDayData(file):
         data_line = line.split(",")
         product_code = getProductCode(file)
         if data_line[1] == product_code and data_line[2] != "999999":
-            bids = data_line[5:14:2]
-            asks = data_line[16:25:2]
-            couples = [stringIntoTime(file[:8] + " " + data_line[0]), float(data_line[2]), max(bids), min(asks)]
+            # bids = data_line[5:14:2]
+            # asks = data_line[16:25:2]
+            couples = [stringIntoTime(file[:8] + " " + data_line[0]), float(data_line[2]), float(data_line[5]), float(data_line[16])]
             time_and_prices.append(couples)
     return  time_and_prices
 
@@ -113,3 +113,32 @@ def calcBollinger(prices, bollinger_band_multiplier):
     upper_bollinger = middle_bollinger + bollinger_band_multiplier * sd
     lower_bollinger = middle_bollinger - bollinger_band_multiplier * sd
     return [middle_bollinger, upper_bollinger, lower_bollinger]
+
+# ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ----
+
+def calcRSI(close_price, prices):
+    gain, loss = [0.0] * 2
+    for p in prices:
+        if p > close_price:
+            gain += p - close_price
+            print "GAIN: " + str(p-close_price) # test
+        if p < close_price:
+            loss += close_price - p
+            print "LOSS: " + str(close_price-p) # test
+    if loss == 0:
+        return 100
+    RS = gain / loss
+    # print "gain = " + str(gain) # test
+    # print "loss = " + str(loss) # test
+    # print "RS = " + str(RS) # test
+    return 100 - 100 / (1 + RS)
+
+'''
+files = findFilesInFolder(0, 5)
+close_prices = []
+for f in files:
+    prices_of_a_day = getOneDayPrices(f)
+    close_prices.append(prices_of_a_day[-1])
+bollinger = calcBollinger(close_prices, 2)
+print bollinger
+'''
