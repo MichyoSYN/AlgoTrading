@@ -23,6 +23,17 @@ def filenameIntoDate(file_name):
     else:
         return datetime.datetime.now()
 
+def isTradingTime(now):
+    start_trading = "091500"
+    end_trading = "161500"
+    start_time = time.strptime(start_trading, "%H%M%S")
+    end_time = time.strptime(end_trading, "%H%M%S")
+    now_time = time.strptime(now, "%H%M%S")
+    if now_time <= end_time and now_time >= start_time:
+        return True
+    else:
+        return False
+
 def getProductCode(file_name):
     date = filenameIntoDate(file_name)
     HSIX3_initial_date = filenameIntoDate("20131101.csv")
@@ -46,8 +57,8 @@ def getOneDayPrices(file_name):
     for line in open(combineFolderWithFilename(file_name)):
         data_line = line.split(",")
         product_code = getProductCode(file_name)
-        if data_line[1] == product_code and data_line[2] != "999999":
-            prices.append(float(data_line[2]))
+        if data_line[1] == product_code and data_line[2] != "999999" and isTradingTime(data_line[0]):
+                prices.append(float(data_line[2]))
     return  prices
 
 def isCSV(file_name):
@@ -74,7 +85,7 @@ def getOneDayData(file):
     for line in open(combineFolderWithFilename(file)):
         data_line = line.split(",")
         product_code = getProductCode(file)
-        if data_line[1] == product_code and data_line[2] != "999999":
+        if data_line[1] == product_code and data_line[2] != "999999" and isTradingTime(data_line[0]):
             # bids = data_line[5:14:2]
             # asks = data_line[16:25:2]
             couples = [stringIntoTime(file[:8] + " " + data_line[0]), float(data_line[2]), float(data_line[5]), float(data_line[16])]
@@ -142,3 +153,21 @@ for f in files:
 bollinger = calcBollinger(close_prices, 2)
 print bollinger
 '''
+
+def getColumnData(a, start, end, column):
+    result = []
+    for i in range(start, end):
+        result.append(a[i][column])
+    return result
+
+def next10Average(a, i):
+    avg = 0.0
+    if i + 10 < len(a):
+        for k in range(i+1, i+11):
+            avg += a[k][3]
+        return avg / 10.0
+    else:
+        for k in range(i+1, len(a)):
+            avg += a[k][3]
+        return avg / 10.0
+    return avg
